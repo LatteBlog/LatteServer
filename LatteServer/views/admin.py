@@ -19,17 +19,25 @@ def login():
 	username = request.args.get('username')
 	pwd = request.args.get('password')
 	result = {}
-	admin = Admin.query.filter_by(username=username).first()
-	if not admin:
-		message = '用户名无效'
-		code = '0'
-	elif not admin.check_pwd(pwd):
-		message = '密码错误'
-		code = '0'
+	if username and username != '':
+		if pwd and pwd != '':
+			admin = Admin.query.filter_by(username=username).first()
+			if not admin:
+				message = '用户名无效'
+				code = '0'
+			elif not admin.check_pwd(pwd):
+				message = '密码错误'
+				code = '0'
+			else:
+				session['logged'] = admin.id
+				code = '1'
+				message = 'ok'
+		else:
+			code = '0'
+			message = '密码不能为空'
 	else:
-		session['logged'] = admin.id
-		code = '1'
-		message = 'ok'
+		code = '0'
+		message = '用户名不能为空'
 
 	result['code'] = code
 	result['message'] = message
