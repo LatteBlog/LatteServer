@@ -108,3 +108,18 @@ def logout():
 	result['message'] = message
 	return jsonify(result)
 
+@admin.route('/getuser')
+def getuser():
+	username = None
+	email = None
+	result = {}
+	if 'logged' in session and session['logged']:
+		adminid = session['logged']
+		if adminid:
+			admin = Admin.query.filter_by(id=adminid).first()
+			username = admin.username
+			email = admin.email
+			result['username'] = username
+			result['email'] = email
+	
+	return jsonify(result)
