@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-"""默认运行于localhost 5100端口"""
+"""LatteServer"""
 from LatteServer import create_app
 
+application = create_app()
+
 if __name__ == "__main__":
-	app = create_app()
-	app.run(host="0.0.0.0", port=5100)
+	application.run()
