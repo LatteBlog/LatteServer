@@ -65,13 +65,13 @@ def register():
 	username = request.args.get('username')
 	email = request.args.get('email')
 	password = request.args.get('password')
-	if email == '':
+	if email and email == '':
 		code = '0'
 		message = '邮箱不能为空'
-	elif username == '':
+	elif username and username == '':
 		code = '0'
 		message = '用户名不能为空'
-	elif password == '':
+	elif password and password == '':
 		code = '0'
 		message = '密码不能为空'
 	else:
