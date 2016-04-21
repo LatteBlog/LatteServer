@@ -19,25 +19,29 @@ def login():
 	username = request.args.get('username')
 	pwd = request.args.get('password')
 	result = {}
-	if username and username != '':
-		if pwd and pwd != '':
-			admin = Admin.query.filter_by(username=username).first()
-			if not admin:
-				message = '用户名无效'
-				code = '0'
-			elif not admin.check_pwd(pwd):
-				message = '密码错误'
-				code = '0'
-			else:
-				session['logged'] = admin.id
-				code = '1'
-				message = 'ok'
-		else:
-			code = '0'
-			message = '密码不能为空'
+	if 'logged' in session and session['logged']:
+		code = '2'
+		message = '已经登陆，请先登出'
 	else:
-		code = '0'
-		message = '用户名不能为空'
+		if username and username != '':
+			if pwd and pwd != '':
+				admin = Admin.query.filter_by(username=username).first()
+				if not admin:
+					message = '用户名无效'
+					code = '3'
+				elif not admin.check_pwd(pwd):
+					message = '密码错误'
+					code = '4'
+				else:
+					session['logged'] = admin.id
+					code = '1'
+					message = 'ok'
+			else:
+				code = '5'
+				message = '密码不能为空'
+		else:
+			code = '6'
+			message = '用户名不能为空'
 
 	result['code'] = code
 	result['message'] = message
@@ -69,10 +73,10 @@ def register():
 		code = '0'
 		message = '邮箱不能为空'
 	elif username and username == '':
-		code = '0'
+		code = '2'
 		message = '用户名不能为空'
 	elif password and password == '':
-		code = '0'
+		code = '3'
 		message = '密码不能为空'
 	else:
 		if(check_email(email)):
@@ -82,10 +86,10 @@ def register():
 				code = '1'
 				message = 'ok'
 			else:
-				code = '0'
+				code = '4'
 				message = '用户名已被注册'
 		else:
-			code = '0'
+			code = '5'
 			message = '邮箱已被注册'
 	
 	result['code'] = code
