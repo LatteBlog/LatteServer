@@ -16,8 +16,8 @@ admin = Module(__name__)
 def login():
 	message = None
 	code = None
-	username = request.args.get('username')
-	pwd = request.args.get('password')
+	username = request.form['username']
+	pwd = request.form['password']
 	result = {}
 	if 'logged' in session and session['logged']:
 		code = '2'
@@ -35,7 +35,7 @@ def login():
 				else:
 					session['logged'] = admin.id
 					code = '1'
-					message = 'ok'
+					message = admin.username
 			else:
 				code = '5'
 				message = '密码不能为空'
